@@ -61,6 +61,10 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Setting whereUpdatedAt($value)
  * @method static Builder|Setting whereYoutube($value)
  * @mixin Eloquent
+ * @property string $logo
+ * @property string $logomedium
+ * @property string $logothumb
+ * @property-read string $image_url
  */
 class Setting extends Model
 {

@@ -81,6 +81,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @method static Builder|User whereUpdatedAt($value)
  * @method static Builder|User whereWebsiteUrl($value)
  * @mixin Eloquent
+ * @property-read \App\Models\LoginSecurity|null $loginSecurity
  */
 class User extends Authenticatable
 {

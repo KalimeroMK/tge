@@ -1,0 +1,15 @@
+/* Add here all your css styles (customizations) */
+.articleImage {
+    width: 60rem;
+    object-fit: cover;
+    object-position: top;
+
+}
+
+.articleImageSmall {
+    width: 29.5rem;
+    height: 16.125rem;
+    object-fit: cover;
+    object-position: top;
+
+}

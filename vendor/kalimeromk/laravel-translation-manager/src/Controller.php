@@ -1,8 +1,8 @@
 <?php namespace Barryvdh\TranslationManager;
 
 use Illuminate\Http\Request;
-use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Barryvdh\TranslationManager\Models\Translation;
 use Illuminate\Support\Collection;
 
@@ -39,6 +39,7 @@ class Controller extends BaseController
         foreach($allTranslations as $translation){
             $translations[$translation->key][$translation->locale] = $translation;
         }
+
         if ($this->manager->getConfig('pagination_enabled')) {
             $total = count($translations);
             $page = request()->get('page', 1);
@@ -51,6 +52,7 @@ class Controller extends BaseController
             $paginator = new LengthAwarePaginator($itemsForCurrentPage, $total, $per_page, $page);
             $translations = $paginator->withPath($path);
         }
+
         return view('translation-manager::'.$this->manager->getConfig('template').'.index')
             ->with('translations', $translations)
             ->with('locales', $locales)

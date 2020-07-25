@@ -133,11 +133,11 @@ class Post extends Model
     public function getImageUrlAttribute($value)
     {
         if (!empty($this->featured_image)) {
-            return $imageUrl = asset('/uploads/images/posts/medium/' . $this->featured_image);
+            return $imageUrl = asset('/uploads/images/posts/' . $this->featured_image);
         } elseif (!empty($this->image_old)) {
             return $imageUrl = asset($this->image_old);
         } else {
-            return $imageUrl = asset('/uploads/images/posts/medium/rsz_biblija.jpg');
+            return $imageUrl = asset('/uploads/images/posts/rsz_biblija.jpg');
         }
     }
 }

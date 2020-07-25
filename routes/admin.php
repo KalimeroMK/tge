@@ -1,4 +1,5 @@
 <?php
+
 Route::resource('ads', 'AdController');
 Route::resource('categories', 'CategoryController');
 Route::resource('posts', 'PostController');

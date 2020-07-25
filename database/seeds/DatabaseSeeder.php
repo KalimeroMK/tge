@@ -17,5 +17,9 @@ class DatabaseSeeder extends Seeder
         Model::reguard();
 //        $this->call('PermissionTableSeeder');
         $this->call('SettingsTableSeeder');
+        $this->call(PostsTableSeeder::class);
+        $this->call(ImageGalleryTableSeeder::class);
+        $this->call(CategoryPostSeeder::class);
+        $this->call(CategoryPostTableSeeder::class);
     }
 }

@@ -2,6 +2,18 @@
 
 All notable changes to `Browsershot` will be documented in this file
 
+## 3.37.2 - 2020-07-22
+
+- Replace emulateMedia call with emulateMediaType (#411)
+
+## 3.37.1 - 2020-07-09
+
+- account for the removal of require('puppeteer/DeviceDescriptors') (#406)
+
+## 3.37.0 - 2020-06-17
+
+- get the list of triggered requests (#402)
+
 ## 3.36.0 - 2020-04-19
 
 - add use of WS Endpoint option (#390)

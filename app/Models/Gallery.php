@@ -27,6 +27,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Gallery wherePriority($value)
  * @method static Builder|Gallery whereUpdatedAt($value)
  * @mixin Eloquent
+ * @property-read mixed $gallery_url
  */
 class Gallery extends Model
 {
