@@ -89,6 +89,7 @@ class Post extends Model
      * @return BelongsTo
      */
     public function category()
+    : BelongsTo
     {
         return $this->belongsTo(Category::class, 'category_id');
     }
@@ -97,6 +98,7 @@ class Post extends Model
      * @return BelongsToMany
      */
     public function tags()
+    : BelongsToMany
     {
         return $this->belongsToMany(Tag::class);
     }
@@ -105,6 +107,7 @@ class Post extends Model
      * @return BelongsTo
      */
     public function user()
+    : BelongsTo
     {
         return $this->belongsTo(User::class, 'author_id');
     }
@@ -113,6 +116,7 @@ class Post extends Model
      * @return BelongsTo
      */
     public function author()
+    : BelongsTo
     {
         return $this->belongsTo(User::class, 'author_id');
     }
@@ -121,23 +125,26 @@ class Post extends Model
      * @return BelongsToMany
      */
     public function categories()
+    : BelongsToMany
     {
         return $this->belongsToMany(Category::class);
     }
 
     /**
-     * @param $value
      * @return string
      */
 
-    public function getImageUrlAttribute($value)
+    public function getImageUrlAttribute()
+    : ?string
     {
         if (!empty($this->featured_image)) {
-            return $imageUrl = asset('/uploads/images/posts/' . $this->featured_image);
-        } elseif (!empty($this->image_old)) {
-            return $imageUrl = asset($this->image_old);
-        } else {
-            return $imageUrl = asset('/uploads/images/posts/rsz_biblija.jpg');
+            return asset('/uploads/images/posts/' . $this->featured_image);
         }
+
+        if (!empty($this->image_old)) {
+            return asset($this->image_old);
+        }
+
+        return asset('/uploads/images/posts/rsz_biblija.jpg');
     }
 }

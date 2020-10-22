@@ -81,7 +81,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @method static Builder|User whereUpdatedAt($value)
  * @method static Builder|User whereWebsiteUrl($value)
  * @mixin Eloquent
- * @property-read \App\Models\LoginSecurity|null $loginSecurity
+ * @property-read LoginSecurity|null $loginSecurity
  */
 class User extends Authenticatable
 {
@@ -89,12 +89,12 @@ class User extends Authenticatable
 
     use ClearsResponseCache;
 
-    const TYPE_ADMIN = "admin";
-    const TYPE_CUSTOMER = "customer";
-    const TYPE_PUBLISHER = "publisher";
-    const TYPE_AUTHOR = "author";
-    const GENDER_MALE = "male";
-    const GENDER_FEMALE = "female";
+    public const TYPE_ADMIN = "admin";
+    public const TYPE_CUSTOMER = "customer";
+    public const TYPE_PUBLISHER = "publisher";
+    public const TYPE_AUTHOR = "author";
+    public const GENDER_MALE = "male";
+    public const GENDER_FEMALE = "female";
     protected $table = 'users';
     protected $fillable = [
         'id',
@@ -189,6 +189,7 @@ class User extends Authenticatable
      * @return HasMany
      */
     public function author()
+    : HasMany
     {
         return $this->hasMany(Post::class, 'author_id');
     }
@@ -197,6 +198,7 @@ class User extends Authenticatable
      * @return BelongsTo
      */
     public function ProductList()
+    : BelongsTo
     {
         return $this->belongsTo(Post::class, 'id', 'author_id')->orderBy('updated_at', 'desc');
     }
@@ -205,6 +207,7 @@ class User extends Authenticatable
      * @return HasOne
      */
     public function loginSecurity()
+    : HasOne
     {
         return $this->hasOne(LoginSecurity::class);
     }

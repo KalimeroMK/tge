@@ -3,7 +3,11 @@
 namespace App\Models;
 
 use App\Traits\ClearsResponseCache;
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
 
 /**
  * App\Models\LoginSecurity
@@ -12,19 +16,19 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $user_id
  * @property int $google2fa_enable
  * @property string|null $google2fa_secret
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\User $user
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LoginSecurity newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LoginSecurity newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LoginSecurity query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LoginSecurity whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LoginSecurity whereGoogle2faEnable($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LoginSecurity whereGoogle2faSecret($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LoginSecurity whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LoginSecurity whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LoginSecurity whereUserId($value)
- * @mixin \Eloquent
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read User $user
+ * @method static Builder|LoginSecurity newModelQuery()
+ * @method static Builder|LoginSecurity newQuery()
+ * @method static Builder|LoginSecurity query()
+ * @method static Builder|LoginSecurity whereCreatedAt($value)
+ * @method static Builder|LoginSecurity whereGoogle2faEnable($value)
+ * @method static Builder|LoginSecurity whereGoogle2faSecret($value)
+ * @method static Builder|LoginSecurity whereId($value)
+ * @method static Builder|LoginSecurity whereUpdatedAt($value)
+ * @method static Builder|LoginSecurity whereUserId($value)
+ * @mixin Eloquent
  */
 class LoginSecurity extends Model
 {
@@ -35,6 +39,7 @@ class LoginSecurity extends Model
     ];
 
     public function user()
+    : BelongsTo
     {
         return $this->belongsTo(User::class);
     }

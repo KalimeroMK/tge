@@ -37,7 +37,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::with('category')->orderBy('id', 'asc')->paginate(12);
+        $posts = Post::with('category')->orderBy('id', 'desc')->paginate(12);
         return view('admin.posts.index', compact('posts'));
     }
 
@@ -57,12 +57,14 @@ class PostController extends Controller
      * @return RedirectResponse
      */
     public function store(Store $request)
-    {
-        $post = Post::create($request->except('featured_image') + [
-            'featured_image' => $this->verifyAndStoreImage($request),
-            'slug' => $this->createSlug($request)
+    : RedirectResponse {
+        $post = Post::create(
+            $request->except('featured_image') + [
+                'featured_image' => $this->verifyAndStoreImage($request),
+                'slug' => $this->createSlug($request)
 
-        ]);
+            ]
+        );
         $post->tags()->attach($request->tags);
         $post->categories()->attach($request->category);
 
@@ -87,16 +89,20 @@ class PostController extends Controller
      * @return RedirectResponse
      */
     public function update(Update $request, Post $post)
-    {
+    : RedirectResponse {
         if ($request->hasFile('featured_image')) {
-            $post->update($request->except('featured_image') + [
-                'featured_image' => $this->verifyAndStoreImage($request),
-                'slug' => $this->createSlug($request)
-            ]);
+            $post->update(
+                $request->except('featured_image') + [
+                    'featured_image' => $this->verifyAndStoreImage($request),
+                    'slug' => $this->createSlug($request)
+                ]
+            );
         } else {
-            $post->update($request->except('featured_image') + [
-                'slug' => $this->createSlug($request)
-            ]);
+            $post->update(
+                $request->except('featured_image') + [
+                    'slug' => $this->createSlug($request)
+                ]
+            );
         }
         $post->tags()->sync($request->tags, true);
         $post->categories()->sync($request->category, true);
@@ -112,7 +118,7 @@ class PostController extends Controller
      * @throws Exception
      */
     public function destroy(Post $post)
-    {
+    : RedirectResponse {
         $post->delete();
         Session::flash('success_msg', trans('messages.post_deleted_success'));
         return redirect()->route('posts.index');

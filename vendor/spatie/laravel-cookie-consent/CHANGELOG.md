@@ -2,6 +2,22 @@
 
 All notable changes to `cookie-consent` will be documented in this file
 
+## 2.12.9 - 2020-09-09
+
+- Support Laravel 8
+
+## 2.12.8 - 2020-08-24
+
+- add Indonesia translation (#127)
+
+## 2.12.7 - 2020-08-24
+
+- fix arabic
+
+## 2.12.6 - 2020-08-24
+
+- add arabic
+
 ## 2.12.5 - 2020-06-08
 
 - use `session.same_site` to set the Cookie's `SameSite` attribute (#119)

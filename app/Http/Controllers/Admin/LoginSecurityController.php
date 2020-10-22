@@ -23,6 +23,7 @@ class LoginSecurityController extends Controller
 
     /**
      * Show 2FA Setting form
+     *
      * @param Request $request
      * @return Application|Factory|View
      */
@@ -31,8 +32,7 @@ class LoginSecurityController extends Controller
         $user = Auth::user();
         $google2fa_url = "";
         $secret_key = "";
-
-        if ($user->loginSecurity()->exists()) {
+        if (($user !== null) && $user->loginSecurity()->exists()) {
             $google2fa = (new Google2FA());
             $google2fa_url = $google2fa->getQRCodeInline(
                 'KalimeroCMS',
@@ -41,18 +41,18 @@ class LoginSecurityController extends Controller
             );
             $secret_key = $user->loginSecurity->google2fa_secret;
         }
-
-        $data = array(
+        $data = [
             'user' => $user,
             'secret' => $secret_key,
             'google2fa_url' => $google2fa_url
-        );
+        ];
 
-        return view('auth.2fa_settings')->with('data', $data);
+        return view('auth.2fa_settings')->with($data);
     }
 
     /**
      * Generate 2FA secret key
+     *
      * @param Request $request
      * @return Application|RedirectResponse|Redirector
      * @throws IncompatibleWithGoogleAuthenticatorException
@@ -64,19 +64,20 @@ class LoginSecurityController extends Controller
         $user = Auth::user();
         // Initialise the 2FA class
         $google2fa = (new Google2FA());
-
-        // Add the secret key to the registration data
-        $login_security = LoginSecurity::firstOrNew(array('user_id' => $user->id));
-        $login_security->user_id = $user->id;
-        $login_security->google2fa_enable = 0;
-        $login_security->google2fa_secret = $google2fa->generateSecretKey();
-        $login_security->save();
-
+        if ($user !== null) {
+            // Add the secret key to the registration data
+            $login_security = LoginSecurity::firstOrNew(['user_id' => $user->id]);
+            $login_security->user_id = $user->id;
+            $login_security->google2fa_enable = 0;
+            $login_security->google2fa_secret = $google2fa->generateSecretKey();
+            $login_security->save();
+        }
         return redirect('/2fa')->with('success', "Secret key is generated.");
     }
 
     /**
      * Enable 2FA
+     *
      * @param Request $request
      * @return Application|RedirectResponse|Redirector
      * @throws IncompatibleWithGoogleAuthenticatorException
@@ -87,21 +88,23 @@ class LoginSecurityController extends Controller
     {
         $user = Auth::user();
         $google2fa = (new Google2FA());
+        if ($user !== null) {
+            $secret = $request->input('secret');
+            $valid = $google2fa->verifyKey($user->loginSecurity->google2fa_secret, $secret);
 
-        $secret = $request->input('secret');
-        $valid = $google2fa->verifyKey($user->loginSecurity->google2fa_secret, $secret);
+            if ($valid) {
+                $user->loginSecurity->google2fa_enable = 1;
+                $user->loginSecurity->save();
+                return redirect('2fa')->with('success', "2FA is enabled successfully.");
+            }
 
-        if ($valid) {
-            $user->loginSecurity->google2fa_enable = 1;
-            $user->loginSecurity->save();
-            return redirect('2fa')->with('success', "2FA is enabled successfully.");
-        } else {
             return redirect('2fa')->with('error', "Invalid verification Code, Please try again.");
         }
     }
 
     /**
      * Disable 2FA
+     *
      * @param Request $request
      * @return Application|RedirectResponse|Redirector
      */
@@ -109,15 +112,22 @@ class LoginSecurityController extends Controller
     {
         if (!(Hash::check($request->get('current-password'), Auth::user()->password))) {
             // The passwords matches
-            return redirect()->back()->with("error", "Your password does not matches with your account password. Please try again.");
+            return redirect()->back()->with(
+                "error",
+                "Your password does not matches with your account password. Please try again."
+            );
         }
 
-        $validatedData = $request->validate([
-            'current-password' => 'required',
-        ]);
+        $validatedData = $request->validate(
+            [
+                'current-password' => 'required',
+            ]
+        );
         $user = Auth::user();
-        $user->loginSecurity->google2fa_enable = 0;
-        $user->loginSecurity->save();
+        if ($user !== null) {
+            $user->loginSecurity->google2fa_enable = 0;
+            $user->loginSecurity->save();
+        }
         return redirect('/2fa')->with('success', "2FA is now disabled.");
     }
 

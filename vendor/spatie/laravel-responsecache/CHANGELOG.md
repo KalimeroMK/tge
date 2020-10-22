@@ -2,6 +2,18 @@
 
 All notable changes to `laravel-responsecache` will be documented in this file.
 
+## 6.6.5 - 2020-09-22
+
+- fix tagged responsecache:clear (#316)
+
+## 6.6.4 - 2020-09-09
+
+- Support Laravel 8
+
+## 6.6.3 - 2020-08-24
+
+- replace Laravel/framework with individual packages (#304)
+
 ## 6.6.2 - 2020-06-03
 
 - support JSON types other than application/json (#299)

@@ -48,7 +48,7 @@ class GalleryController extends Controller
      * @return RedirectResponse
      */
     public function store(Store $request)
-    {
+    : RedirectResponse {
         $post_id = $request['post_id'];
         if ($request->hasfile('image')) {
             foreach ($request->file('image') as $image) {
@@ -74,7 +74,7 @@ class GalleryController extends Controller
      * @throws Exception
      */
     public function destroy(Gallery $gallery)
-    {
+    : RedirectResponse {
 //         Delete images
         $image = public_path() . '/uploads/images/gallery/' . $gallery->image;
         unlink($image);

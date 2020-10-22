@@ -50,9 +50,7 @@ foreach ($requests as $request) {
 
 ## Support us
 
-Learn how to create a package like this one, by watching our premium video course:
-
-[![Laravel Package training](https://spatie.be/github/package-training.jpg)](https://laravelpackage.training)
+[![Image](https://github-ads.s3.eu-central-1.amazonaws.com/browsershot.jpg)](https://spatie.be/github-ad-click/browsershot)
 
 We invest a lot of resources into creating [best in class open source packages](https://spatie.be/open-source). You can support us by [buying one of our paid products](https://spatie.be/open-source/support-us).
 
@@ -235,6 +233,15 @@ Browsershot::url('https://example.com')
     ->save($pathToImage);
 ```
 
+### Getting a screenshot as base64
+
+If you need the base64 version of a screenshot you can use the `base64Screenshot` method. This can come in handy when you need don't want to save the screenshot on disk.
+
+```php
+$base64Data = Browsershot::url('https://example.com')
+    ->base64Screenshot();
+```
+
 #### Manipulating the image
 
 You can use all the methods [spatie/image](https://docs.spatie.be/image/v1) provides. Here's an example where we create a greyscale image:
@@ -282,7 +289,7 @@ Browsershot::url('https://example.com')
 
 #### Device emulation
 
-You can emulate a device view with the `device` method. The devices' names can be found [Here](https://github.com/puppeteer/puppeteer/blob/master/src/DeviceDescriptors.ts).
+You can emulate a device view with the `device` method. The devices' names can be found [Here](https://github.com/puppeteer/puppeteer/blob/main/src/common/DeviceDescriptors.ts).
 
 ```php
 $browsershot = new Browsershot('https://example.com', true);
@@ -761,6 +768,16 @@ If you have a remote endpoint for a running chromium/chrome instance, properly c
 ```php
 Browsershot::url('https://example.com')
    ->setRemoteInstance('1.2.3.4', 9222)
+   ...
+```
+
+#### Using a pipe instead of a WebSocket
+
+If you want to connects to the browser over a pipe instead of a WebSocket, you can use:
+
+```php
+Browsershot::url('https://example.com')
+   ->usePipe()
    ...
 ```
 

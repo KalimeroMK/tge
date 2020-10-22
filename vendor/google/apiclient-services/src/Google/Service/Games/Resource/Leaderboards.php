@@ -50,8 +50,8 @@ class Google_Service_Games_Resource_Leaderboards extends Google_Service_Resource
    *
    * @opt_param string pageToken The token returned by the previous request.
    * @opt_param int maxResults The maximum number of leaderboards to return in the
-   * response.  For any response, the actual number of leaderboards returned may
-   * be less than the specified `maxResults`.
+   * response. For any response, the actual number of leaderboards returned may be
+   * less than the specified `maxResults`.
    * @opt_param string language The preferred language to use for strings returned
    * by this method.
    * @return Google_Service_Games_LeaderboardListResponse

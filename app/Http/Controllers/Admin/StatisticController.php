@@ -62,15 +62,13 @@ class StatisticController extends Controller
      */
     public function getDevices()
     {
-        $devices = Analytics::performQuery(
+        return Analytics::performQuery(
             Period::years(1),
             'ga:sessions',
             [
                 'dimensions' => 'ga:deviceCategory'
             ]
         );
-
-        return $devices->rows;
     }
 
     /**
@@ -78,7 +76,7 @@ class StatisticController extends Controller
      */
     public function getVisitsPerCountry()
     {
-        $visitsPerCountry = Analytics::performQuery(
+        return Analytics::performQuery(
             Period::years(1),
             'ga:sessions',
             [
@@ -86,6 +84,5 @@ class StatisticController extends Controller
                 'dimensions' => 'ga:country'
             ]
         );
-        return $visitsPerCountry->rows;
     }
 }

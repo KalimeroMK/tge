@@ -71,19 +71,39 @@ class Setting extends Model
     use ClearsResponseCache;
 
     protected $table = 'settings';
-    protected $fillable = ['title', 'mainurl', 'email','description','featured_image','link','phone','address','twitter','facebook','skype','linkedin','gplus','flickr','youtube','pinterest','analytics_code','mailchimp_form'];
+    protected $fillable = [
+        'title',
+        'mainurl',
+        'email',
+        'description',
+        'featured_image',
+        'link',
+        'phone',
+        'address',
+        'twitter',
+        'facebook',
+        'skype',
+        'linkedin',
+        'gplus',
+        'flickr',
+        'youtube',
+        'pinterest',
+        'analytics_code',
+        'mailchimp_form'
+    ];
 
     /**
      * @param $value
      * @return string
      */
 
-    public function getImageUrlAttribute($value)
+    public function getImageUrlAttribute()
+    : ?string
     {
         if (!empty($this->featured_image)) {
-            return $imageUrl = asset('/uploads/images/settings/medium/' . $this->featured_image);
-        } else {
-            return $imageUrl = asset('/uploads/images/posts/medium/rsz_biblija.jpg');
+            return asset('/uploads/images/settings/medium/' . $this->featured_image);
         }
+
+        return asset('/uploads/images/posts/medium/rsz_biblija.jpg');
     }
 }

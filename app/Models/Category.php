@@ -46,11 +46,11 @@ use Kalnoy\Nestedset\QueryBuilder;
  * @method static Builder|Category whereTitle($value)
  * @method static Builder|Category whereUpdatedAt($value)
  * @mixin Eloquent
- * @property-read \Kalnoy\Nestedset\Collection|\App\Models\Category[] $categories
+ * @property-read Collection|Category[] $categories
  * @property-read int|null $categories_count
- * @property-read \Kalnoy\Nestedset\Collection|\App\Models\Category[] $childrenCategories
+ * @property-read Collection|Category[] $childrenCategories
  * @property-read int|null $children_categories_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Post[] $posts
+ * @property-read \Illuminate\Database\Eloquent\Collection|Post[] $posts
  * @property-read int|null $posts_count
  */
 class Category extends Model
@@ -67,7 +67,7 @@ class Category extends Model
     public static function getTree()
     {
         $categories = self::get()->toTree();
-        $traverse = function ($categories, $prefix = '') use (&$traverse, &$allCats) {
+        $traverse = static function ($categories, $prefix = '') use (&$traverse, &$allCats) {
             foreach ($categories as $category) {
                 $allCats[] = ["title" => $prefix . ' ' . $category->title, "id" => $category->id];
                 $traverse($category->children, $prefix . '-');
@@ -81,6 +81,7 @@ class Category extends Model
      * @return string
      */
     public static function getList()
+    : string
     {
         $categories = self::get()->toTree();
         $lists = '<li class="list-unstyled">';
@@ -96,7 +97,7 @@ class Category extends Model
      * @return string
      */
     public static function renderNodeHP($node)
-    {
+    : string {
         $list = '<li class="dropdown-item"><a class="nav-link" href="/categories/' . $node->slug . '">' . $node->title . '</a>';
         if ($node->children()->count() > 0) {
             $list .= '<ul class="dropdown-menu">';
@@ -114,6 +115,7 @@ class Category extends Model
      * @return HasMany
      */
     public function post()
+    : HasMany
     {
         return $this->hasMany(Post::class, 'category_id');
     }
@@ -122,6 +124,7 @@ class Category extends Model
      * @return BelongsToMany
      */
     public function posts()
+    : BelongsToMany
     {
         return $this->belongsToMany(Post::class);
     }

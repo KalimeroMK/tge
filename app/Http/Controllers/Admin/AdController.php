@@ -54,7 +54,7 @@ class AdController extends Controller
      * @return RedirectResponse
      */
     public function store(Store $request)
-    {
+    : RedirectResponse {
         $ad = Ad::create($request->all());
         Session::flash('success_msg', trans('messages.ads_created_success'));
         return redirect()->route('ads.edit', $ad);
@@ -92,7 +92,7 @@ class AdController extends Controller
      * @throws Exception
      */
     public function destroy(Ad $ad)
-    {
+    : RedirectResponse {
         $ad->delete();
         Session::flash('flash_message', 'Ad successfully deleted!');
         return redirect()->back();

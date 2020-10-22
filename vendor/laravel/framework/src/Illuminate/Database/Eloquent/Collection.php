@@ -79,19 +79,18 @@ class Collection extends BaseCollection implements QueueableCollection
             ->whereKey($this->modelKeys())
             ->select($this->first()->getKeyName())
             ->withCount(...func_get_args())
-            ->get();
+            ->get()
+            ->keyBy($this->first()->getKeyName());
 
         $attributes = Arr::except(
             array_keys($models->first()->getAttributes()),
             $models->first()->getKeyName()
         );
 
-        $models->each(function ($model) use ($attributes) {
-            $this->where($this->first()->getKeyName(), $model->getKey())
-                ->each
-                ->forceFill(Arr::only($model->getAttributes(), $attributes))
-                ->each
-                ->syncOriginalAttributes($attributes);
+        $this->each(function ($model) use ($models, $attributes) {
+            $extraAttributes = Arr::only($models->get($model->getKey())->getAttributes(), $attributes);
+
+            $model->forceFill($extraAttributes)->syncOriginalAttributes($attributes);
         });
 
         return $this;
@@ -301,9 +300,11 @@ class Collection extends BaseCollection implements QueueableCollection
             ->get()
             ->getDictionary();
 
-        return $this->map(function ($model) use ($freshModels) {
-            return $model->exists && isset($freshModels[$model->getKey()])
-                    ? $freshModels[$model->getKey()] : null;
+        return $this->filter(function ($model) use ($freshModels) {
+            return $model->exists && isset($freshModels[$model->getKey()]);
+        })
+        ->map(function ($model) use ($freshModels) {
+            return $freshModels[$model->getKey()];
         });
     }
 
@@ -358,7 +359,7 @@ class Collection extends BaseCollection implements QueueableCollection
      *
      * @param  string|callable|null  $key
      * @param  bool  $strict
-     * @return static|\Illuminate\Support\Collection
+     * @return static
      */
     public function unique($key = null, $strict = false)
     {
@@ -485,7 +486,7 @@ class Collection extends BaseCollection implements QueueableCollection
      */
     public function zip($items)
     {
-        return call_user_func_array([$this->toBase(), 'zip'], func_get_args());
+        return $this->toBase()->zip(...func_get_args());
     }
 
     /**
@@ -633,7 +634,7 @@ class Collection extends BaseCollection implements QueueableCollection
     /**
      * Get the Eloquent query builder from the collection.
      *
-     * @return Illuminate\Database\Eloquen\Builder
+     * @return \Illuminate\Database\Eloquent\Builder
      *
      * @throws \LogicException
      */

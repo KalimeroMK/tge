@@ -39,9 +39,9 @@ class Gallery extends Model
     public function getGalleryUrlAttribute($value)
     {
         if (!empty($this->image)) {
-            return $galleryUrl = asset('/uploads/images/gallery/' . $this->image);
-        } else {
-            return "no image";
+            return asset('/uploads/images/gallery/' . $this->image);
         }
+
+        return "no image";
     }
 }

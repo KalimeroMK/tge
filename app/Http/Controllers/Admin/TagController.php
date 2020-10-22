@@ -6,15 +6,17 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Tag\Store;
 use App\Models\PostTag;
 use App\Models\Tag;
+use App\Traits\SlugCreate;
 use Exception;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
-use Illuminate\Support\Str;
 use Illuminate\View\View;
 use Session;
 
 class TagController extends Controller
 {
+    use SlugCreate;
+
     /**
      * TagController constructor.
      */
@@ -52,9 +54,9 @@ class TagController extends Controller
      * @return string
      */
     public function store(Store $request)
-    {
-        $request['slug'] = Str::slug($request->input('title'));
-        Tag::create($request->all());
+    : string {
+        $slug = $this->createSlug($request);
+        Tag::create($slug);
         return redirect()->route('tags.index');
     }
 
@@ -65,7 +67,7 @@ class TagController extends Controller
      */
 
     public function destroy(Tag $tag)
-    {
+    : string {
         $tag->posts()->detach();
         $tag->delete();
         Session::flash('success_msg', trans('messages.tag_deleted_success'));
